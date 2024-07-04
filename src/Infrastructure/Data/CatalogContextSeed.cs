@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
@@ -63,6 +64,7 @@ public class CatalogContextSeed
             {
                 new("Azure"),
                 new(".NET"),
+                new("Logic"),
                 new("Visual Studio"),
                 new("SQL Server"),
                 new("Other")
@@ -80,13 +82,51 @@ public class CatalogContextSeed
             };
     }
 
+    /// <summary>
+    /// Esta funcion, cambiara el nombre de ".NET BLACK & WHITE MUG" por ".NET LOGIC MUG" y la categoria a "Logic"
+    /// </summary>
+    /// <returns></returns>
+    public static async Task UpdateProductoNameAndCategory(CatalogContext catalogContext)
+    {
+        // obtenemos el porducto, bsucanod por coindicnecia en su nombre
+        CatalogItem? product = await catalogContext.CatalogItems
+                .FirstOrDefaultAsync(p => p.Name == ".NET Black & White Mug");
+
+        // Buscar la marca "Logic" en la base de datos
+        CatalogBrand? logicBrand = await catalogContext.CatalogBrands
+            .FirstOrDefaultAsync(b => b.Brand == "Logic");
+
+        // Porducto no existe
+        if (product is null || logicBrand is null)
+        {
+            return;
+        }
+
+        // Actualizamos el nombre del producto po ".NET LOGIC MUG"
+        product.UpdateDetails(new CatalogItem.CatalogItemDetails( name: ".NET LOGIC MUG", product.Description, product.Price));
+
+        if (logicBrand != null)
+        {
+            product.UpdateBrand(logicBrand.Id);
+        }
+
+        try
+        {
+            await catalogContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
     static IEnumerable<CatalogItem> GetPreconfiguredItems()
     {
         return new List<CatalogItem>
             {
-                new(2,2, ".NET Bot Black Sweatshirt", ".NET Bot Black Sweatshirt", 19.5M,  "http://catalogbaseurltobereplaced/images/products/1.png"),
-                new(1,2, ".NET Black & White Mug", ".NET Black & White Mug", 8.50M, "http://catalogbaseurltobereplaced/images/products/2.png"),
-                new(2,5, "Prism White T-Shirt", "Prism White T-Shirt", 12,  "http://catalogbaseurltobereplaced/images/products/3.png"),
+                new(2,2, ".NET Bot Black Sweatshirt", ".NET Bot Black Sweatshirt", 19.5693M,  "http://catalogbaseurltobereplaced/images/products/1.png"),
+                new(1,2, ".NET Black & White Mug", ".NET Black & White Mug", 8.5590M, "http://catalogbaseurltobereplaced/images/products/2.png"),
+                new(2,5, "Prism White T-Shirt", "Prism White T-Shirt", 12.2359M,  "http://catalogbaseurltobereplaced/images/products/3.png"),
                 new(2,2, ".NET Foundation Sweatshirt", ".NET Foundation Sweatshirt", 12, "http://catalogbaseurltobereplaced/images/products/4.png"),
                 new(3,5, "Roslyn Red Sheet", "Roslyn Red Sheet", 8.5M, "http://catalogbaseurltobereplaced/images/products/5.png"),
                 new(2,2, ".NET Blue Sweatshirt", ".NET Blue Sweatshirt", 12, "http://catalogbaseurltobereplaced/images/products/6.png"),

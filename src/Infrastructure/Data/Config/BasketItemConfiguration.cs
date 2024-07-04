@@ -10,6 +10,6 @@ public class BasketItemConfiguration : IEntityTypeConfiguration<BasketItem>
     {
         builder.Property(bi => bi.UnitPrice)
             .IsRequired(true)
-            .HasColumnType("decimal(18,2)");
+            .HasColumnType("decimal(16,3)");
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Ardalis.GuardClauses;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 
@@ -8,6 +9,7 @@ public class CatalogItem : BaseEntity, IAggregateRoot
 {
     public string Name { get; private set; }
     public string Description { get; private set; }
+    [Column(TypeName = "decimal(16, 3)")]
     public decimal Price { get; private set; }
     public string PictureUri { get; private set; }
     public int CatalogTypeId { get; private set; }

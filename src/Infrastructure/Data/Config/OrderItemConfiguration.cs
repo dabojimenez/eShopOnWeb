@@ -19,6 +19,6 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
 
         builder.Property(oi => oi.UnitPrice)
             .IsRequired(true)
-            .HasColumnType("decimal(18,2)");
+            .HasColumnType("decimal(16,3)");
     }
 }

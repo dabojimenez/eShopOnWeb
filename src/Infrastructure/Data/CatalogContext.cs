@@ -22,6 +22,7 @@ public class CatalogContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        //builder.Entity<CatalogItem>().Property(d => d.Price).HasPrecision(18,3);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

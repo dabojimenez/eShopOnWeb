@@ -126,11 +126,15 @@ using (var scope = app.Services.CreateScope())
     {
         var catalogContext = scopedProvider.GetRequiredService<CatalogContext>();
         await CatalogContextSeed.SeedAsync(catalogContext, app.Logger);
+        // Actualizamos el nombre del producto ".NET BLACK & WHITE MUG"
+        await CatalogContextSeed.UpdateProductoNameAndCategory(catalogContext);
 
         var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var identityContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
         await AppIdentityDbContextSeed.SeedAsync(identityContext, userManager, roleManager);
+        // Actualizamos el username de la cuenta 'demo'
+        await AppIdentityDbContextSeed.UpdateAccountDemoToSistema(identityContext);
     }
     catch (Exception ex)
     {
